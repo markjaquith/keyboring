@@ -1,17 +1,31 @@
 <script lang="ts">
-	import KeyEvent from '$lib/components/KeyEvent.svelte'
+	import Press from '$lib/components/Press.svelte'
 	import type { Shortcut } from '$lib/Schemas'
 	import { preventDefault } from '$lib/utils'
 
 	let newName = $state('')
 	let shortcuts: Shortcut[] = $state([
 		{
-			action: 'Remove additional cursors',
-			sequences: [{ press: [','], cmd: true }, { press: [','] }],
+			action: 'Single key',
+			sequences: [[{ press: [','] }]],
 		},
 		{
-			action: 'Duplicate cursor below',
-			sequences: [{ press: ['C'] }],
+			action: 'Uppercase key',
+			sequences: [[{ press: ['C'] }]],
+		},
+		{
+			action: 'Multiple sequences',
+			sequences: [
+				[{ press: ['g'] }, { press: ['h'] }],
+				[{ press: ['g'] }, { press: ['h'] }],
+			],
+		},
+		{
+			action: 'Multiple sequences (complex)',
+			sequences: [
+				[{ press: ['g'] }, { press: ['h'], opt: true }],
+				[{ press: ['z', 'x'], cmd: true }, { press: ['L'] }],
+			],
 		},
 	])
 </script>
@@ -20,17 +34,19 @@
 	<input type="text" bind:value={newName} class="rounded-sm border border-gray-200 p-2" />
 </form>
 
-<div class="flex flex-col gap-8">
+<div class="grid grid-cols-[min-content,1fr]">
 	{#each shortcuts as shortcut}
-		<div class="flex flex-row gap-4">
-			<div class="flex flex-col gap-2">
-				{#each shortcut.sequences as sequence}
-					<KeyEvent {...sequence} />
-				{/each}
-			</div>
-			<div class="flex flex-col justify-center">
-				{shortcut.action}
-			</div>
+		<div class="flex flex-col border-t border-gray-300 p-1">
+			{#each shortcut.sequences as sequence}
+				<div class="flex flex-row justify-end gap-1 p-1">
+					{#each sequence as presses}
+						<Press {...presses} />
+					{/each}
+				</div>
+			{/each}
+		</div>
+		<div class="flex flex-col justify-center border-t border-gray-300 pl-2">
+			{shortcut.action}
 		</div>
 	{/each}
 </div>

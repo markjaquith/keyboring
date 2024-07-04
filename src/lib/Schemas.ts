@@ -131,11 +131,12 @@ const KEYS = [
 	'?',
 	'`',
 	'~',
+	' ',
 ] as const
 
 type Key = (typeof KEYS)[number]
 
-export type KeyEvent = {
+export type Press = {
 	press: Key[]
 	shift?: true
 	ctrl?: true
@@ -144,7 +145,7 @@ export type KeyEvent = {
 }
 
 export type Shortcut = {
-	sequences: KeyEvent[]
+	sequences: Press[][]
 	action: string
 	mode?: Mode
 	entersMode?: Mode
