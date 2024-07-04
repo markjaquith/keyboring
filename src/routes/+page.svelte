@@ -1,3 +1,4 @@
-<script></script>
+<script lang="ts">
+</script>
 
-<p class="mt-2 " >     Test </p>
+<p class="text-white mt-2 text-black">Test</p>
